@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+ 
+char *oddArray;
+char *evenArray;
+int count = 0;
+ 
+struct node
+{
+  int data;
+  struct node *left;
+  struct node *right;
+};
+ 
+void treeTraverse(struct node* node)
+{
+    if (node == NULL)
+        return;
+ 
+ 
+    treeTraverse(node->left);
+ 
+    if(node->data%2==0){
+        evenArray[count++]=node->data;
+    }else{
+        oddArray[count++] = node->data;
+    }
+ 
+ 
+    treeTraverse(node->right);
+}
+ 
+struct node* newNode(int data)
+{
+  struct node* node = (struct node*)malloc(sizeof(struct node));
+ 
+  node->data = data;
+ 
+  node->left = NULL;
+  node->right = NULL;
+  return(node);
+}
+ 
+int size(struct node* node)
+{
+  if (node==NULL)
+    return 0;
+  else
+    return(size(node->left) + 1 + size(node->right));
+}
+ 
+ 
+ 
+int main()
+{
+    struct node *root = newNode(2);
+    root->left        = newNode(5);
+    root->right       = newNode(7);
+    root->right->right =newNode(3);
+    root->left->left  = newNode(2);
+ 
+    int sizeOfTree = size(root);
+ 
+    oddArray = malloc(sizeof(char)*sizeOfTree);
+    evenArray = malloc(sizeof(char)*sizeOfTree);
+ 
+    treeTraverse(root);
+ 
+    int evenSumm = 0;
+    for(int i =0;i<sizeof(evenArray);i++){
+        evenSumm+=evenArray[i];
+    }
+ 
+    int oddSum = 0;
+ 
+    for(int j = 0;j<sizeof(oddArray);j++){
+        oddSum+=oddArray[j];
+    }
+ 
+    printf("Even sum is: %d\n",evenSumm);
+ 
+    printf("Odd sum is: %d",oddSum);
+ 
+    return 0;
+}
